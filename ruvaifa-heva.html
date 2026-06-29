@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mohammad Ruvaifa → Heva AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+
+/* ─── TOKENS ─── */
+:root {
+  --bg:      #0d0f12;
+  --bg-2:    #141618;
+  --bg-3:    #1c1f24;
+  --bg-4:    #232830;
+  --text:    #e8e4dc;
+  --text-2:  #9a9488;
+  --text-3:  #5c584f;
+  --accent:  #d4a853;
+  --accent-d:#a07c35;
+  --accent-g: linear-gradient(90deg, #d4a853, #e8c97a, #d4a853);
+  --rule:    rgba(255,255,255,0.07);
+  --rule-b:  rgba(255,255,255,0.12);
+  --r:       4px;
+  --px:      60px;
+  --max:     1060px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--accent-d); border-radius: 2px; }
+
+/* ─── NAV ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 900;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 var(--px); height: 54px;
+  background: rgba(13,15,18,0.88);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--rule);
+}
+.nav-logo {
+  font-family: 'Syne', sans-serif;
+  font-size: 13px; font-weight: 700;
+  color: var(--text);
+  display: flex; align-items: center; gap: 10px;
+}
+.nav-logo span {
+  color: var(--accent);
+}
+.nav-links { display: flex; gap: 28px; list-style: none; }
+.nav-links a {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--text-2);
+  text-decoration: none; letter-spacing: .1em;
+  text-transform: uppercase;
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--accent); }
+
+/* ─── WRAP ─── */
+.wrap {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 100px var(--px);
+}
+section + section { border-top: 1px solid var(--rule); }
+
+/* ─── REVEAL ─── */
+.reveal {
+  opacity: 0; transform: translateY(22px);
+  transition: opacity .7s ease, transform .7s ease;
+}
+.reveal.in { opacity: 1; transform: none; }
+.d1 { transition-delay: .1s; }
+.d2 { transition-delay: .2s; }
+.d3 { transition-delay: .3s; }
+.d4 { transition-delay: .4s; }
+
+/* ─── HERO ─── */
+#hero {
+  min-height: 100svh;
+  display: flex; flex-direction: column; justify-content: center;
+  position: relative; overflow: hidden;
+}
+
+/* Signature: sweeping amber signal line */
+.signal-line {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 1px; background: transparent; overflow: hidden;
+}
+.signal-line::after {
+  content: '';
+  position: absolute; top: 0; left: -100%; width: 50%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  animation: sweep 4s ease-in-out infinite;
+}
+@keyframes sweep {
+  0%   { left: -50%; }
+  100% { left: 150%; }
+}
+
+/* Ambient glow */
+.hero-glow {
+  position: absolute; top: 15%; right: -10%;
+  width: 480px; height: 480px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(212,168,83,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+#hero .wrap {
+  padding-top: 120px; padding-bottom: 80px;
+  position: relative; z-index: 2;
+}
+
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--accent);
+  letter-spacing: .25em; text-transform: uppercase;
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 36px;
+  opacity: 0; animation: fadeUp .6s .1s ease forwards;
+}
+.eyebrow::before {
+  content: ''; width: 24px; height: 1px;
+  background: var(--accent); opacity: .6;
+}
+
+.hero-h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(32px, 4.2vw, 58px);
+  font-weight: 800; line-height: 1.08;
+  letter-spacing: -.025em;
+  margin-bottom: 28px;
+  opacity: 0; animation: fadeUp .7s .22s ease forwards;
+}
+.hero-h1 .amber { color: var(--accent); }
+.hero-h1 .dim   { color: var(--text-2); font-weight: 600; }
+
+.hero-body {
+  font-size: 16px; color: var(--text-2);
+  line-height: 1.8; max-width: 520px;
+  margin-bottom: 48px;
+  opacity: 0; animation: fadeUp .7s .36s ease forwards;
+}
+.hero-body strong { color: var(--text); font-weight: 500; }
+
+.hero-stats {
+  display: flex; gap: 36px; flex-wrap: wrap;
+  padding: 24px 0; border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 44px;
+  opacity: 0; animation: fadeUp .7s .5s ease forwards;
+}
+.hstat-val {
+  font-family: 'Syne', sans-serif;
+  font-size: 26px; font-weight: 700;
+  color: var(--text); line-height: 1;
+  margin-bottom: 5px;
+}
+.hstat-val .acc { color: var(--accent); }
+.hstat-lbl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; color: var(--text-2);
+  letter-spacing: .09em; text-transform: uppercase;
+  line-height: 1.5;
+}
+
+.hero-actions {
+  display: flex; gap: 12px; flex-wrap: wrap;
+  opacity: 0; animation: fadeUp .7s .62s ease forwards;
+}
+.btn-amber {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--accent); color: #0d0f12;
+  padding: 12px 24px; border-radius: var(--r);
+  font-family: 'Syne', sans-serif;
+  font-size: 12px; font-weight: 700; letter-spacing: .04em;
+  text-decoration: none;
+  transition: background .2s, transform .2s;
+}
+.btn-amber:hover { background: #e8c97a; transform: translateY(-1px); }
+.btn-outline {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: transparent; color: var(--text);
+  padding: 11px 20px; border-radius: var(--r);
+  border: 1px solid var(--rule-b);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; letter-spacing: .09em;
+  text-decoration: none;
+  transition: border-color .2s, color .2s;
+}
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ─── SECTION HEADER ─── */
+.sec-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; color: var(--accent);
+  letter-spacing: .28em; text-transform: uppercase;
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 32px;
+}
+.sec-tag::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+
+.sec-h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(24px, 3vw, 38px);
+  font-weight: 800; line-height: 1.1;
+  letter-spacing: -.02em; margin-bottom: 14px;
+}
+.sec-h2 .acc { color: var(--accent); }
+.sec-h2 .dim { color: var(--text-2); }
+
+.sec-sub {
+  font-size: 15px; color: var(--text-2);
+  line-height: 1.75; max-width: 520px; margin-bottom: 52px;
+}
+
+/* ─── WHY HEVA ─── */
+.why-row {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px; background: var(--rule);
+  border: 1px solid var(--rule);
+  margin-bottom: 0;
+}
+.why-card {
+  background: var(--bg-2); padding: 32px;
+  transition: background .25s;
+}
+.why-card:hover { background: var(--bg-3); }
+.why-card-top {
+  display: flex; justify-content: space-between;
+  align-items: flex-start; margin-bottom: 16px;
+}
+.why-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; color: var(--accent);
+  letter-spacing: .18em; text-transform: uppercase;
+}
+.why-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 16px; font-weight: 700;
+  margin-bottom: 12px; line-height: 1.3;
+  letter-spacing: -.01em;
+}
+.why-body { font-size: 14px; color: var(--text-2); line-height: 1.75; }
+.why-body strong { color: var(--text); font-weight: 500; }
+
+/* ─── EXPERIENCE ─── */
+.exp-list { display: flex; flex-direction: column; }
+.exp-item {
+  display: grid; grid-template-columns: 188px 1fr;
+  gap: 40px; padding: 36px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.exp-item:first-child { padding-top: 0; }
+.exp-item:last-child { border-bottom: none; }
+
+.exp-date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; color: var(--text-2);
+  letter-spacing: .08em; text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.exp-co {
+  font-family: 'Syne', sans-serif;
+  font-size: 13px; font-weight: 700;
+  color: var(--text); margin-bottom: 3px;
+}
+.exp-role { font-size: 12px; color: var(--text-2); margin-bottom: 10px; }
+.exp-pill {
+  display: inline-block;
+  background: var(--bg-4);
+  border: 1px solid var(--rule-b);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--text-2);
+  padding: 3px 8px; border-radius: 2px;
+}
+.exp-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 17px; font-weight: 700;
+  color: var(--text); line-height: 1.3;
+  margin-bottom: 14px; letter-spacing: -.015em;
+}
+.exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+.exp-bullets li {
+  font-size: 14px; color: var(--text-2);
+  line-height: 1.72; padding-left: 18px; position: relative;
+}
+.exp-bullets li::before {
+  content: '›'; position: absolute; left: 0;
+  color: var(--accent); font-size: 14px; top: 0; line-height: 1.72;
+}
+.exp-bullets li strong { color: var(--text); font-weight: 500; }
+.exp-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 16px; }
+.tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; letter-spacing: .07em;
+  background: var(--bg-3); border: 1px solid var(--rule-b);
+  color: var(--text-2); padding: 4px 9px; border-radius: 2px;
+}
+
+/* ─── WHAT I'D BUILD ─── */
+.build-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.build-card {
+  background: var(--bg-2);
+  border: 1px solid var(--rule);
+  border-radius: var(--r); padding: 28px;
+  position: relative; overflow: hidden;
+  transition: border-color .3s, transform .25s;
+}
+.build-card::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: var(--accent-g);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .35s ease;
+}
+.build-card:hover::after { transform: scaleX(1); }
+.build-card:hover { border-color: rgba(212,168,83,0.25); transform: translateY(-2px); }
+.build-icon { font-size: 20px; margin-bottom: 14px; display: block; }
+.build-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 15px; font-weight: 700;
+  margin-bottom: 10px; letter-spacing: -.01em;
+}
+.build-desc { font-size: 14px; color: var(--text-2); line-height: 1.72; margin-bottom: 14px; }
+.build-desc strong { color: var(--text); font-weight: 500; }
+
+/* ─── METRICS ─── */
+.metrics-row {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1px; background: var(--rule);
+  border: 1px solid var(--rule);
+  margin-bottom: 44px;
+}
+.m-cell { background: var(--bg-2); padding: 26px 20px; text-align: center; }
+.m-val {
+  font-family: 'Syne', sans-serif;
+  font-size: 28px; font-weight: 800;
+  color: var(--text); margin-bottom: 6px;
+}
+.m-val .acc { color: var(--accent); }
+.m-lbl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; color: var(--text-2);
+  letter-spacing: .09em; text-transform: uppercase; line-height: 1.5;
+}
+
+/* ─── SKILLS ─── */
+.skills-row {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--rule);
+  border: 1px solid var(--rule);
+}
+.skill-group { background: var(--bg-2); padding: 22px 26px; }
+.skill-group-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; color: var(--accent);
+  letter-spacing: .18em; text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.skill-items { display: flex; flex-wrap: wrap; gap: 5px; }
+
+/* ─── PROJECTS ─── */
+.proj-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px; background: var(--rule);
+  border: 1px solid var(--rule);
+  margin-bottom: 28px;
+}
+.proj-card {
+  background: var(--bg-2); padding: 30px;
+  transition: background .2s;
+}
+.proj-card:hover { background: var(--bg-3); }
+.proj-header {
+  display: flex; justify-content: space-between;
+  align-items: flex-start; margin-bottom: 10px;
+}
+.proj-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 15px; font-weight: 700; letter-spacing: -.01em;
+}
+.proj-link {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; color: var(--text-2);
+  text-decoration: none; letter-spacing: .08em;
+  transition: color .2s;
+}
+.proj-link:hover { color: var(--accent); }
+.proj-desc { font-size: 14px; color: var(--text-2); line-height: 1.7; margin-bottom: 14px; }
+.proj-result {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--accent);
+  letter-spacing: .06em; padding: 7px 11px;
+  background: rgba(212,168,83,0.07);
+  border: 1px solid rgba(212,168,83,0.15);
+  border-radius: 2px; margin-bottom: 12px;
+  display: inline-block;
+}
+
+/* ─── PUB CARD ─── */
+.pub-card {
+  background: var(--bg-2); border: 1px solid var(--rule);
+  border-radius: var(--r); padding: 26px 30px;
+  display: flex; gap: 24px; align-items: flex-start;
+}
+.pub-badge {
+  flex-shrink: 0; background: var(--bg-3);
+  border: 1px solid var(--rule-b);
+  padding: 10px 14px; border-radius: var(--r);
+  text-align: center; min-width: 72px;
+}
+.pub-badge-top {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px; color: var(--text-2);
+  letter-spacing: .1em; text-transform: uppercase; margin-bottom: 4px;
+}
+.pub-badge-j {
+  font-family: 'Syne', sans-serif;
+  font-size: 14px; font-weight: 800; color: var(--accent);
+}
+.pub-badge-pub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px; color: var(--text-2); margin-top: 2px;
+}
+.pub-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 14px; font-weight: 700;
+  margin-bottom: 7px; letter-spacing: -.01em;
+}
+.pub-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; color: var(--text-2);
+  letter-spacing: .06em; margin-bottom: 9px;
+}
+.pub-body { font-size: 14px; color: var(--text-2); line-height: 1.7; }
+
+/* ─── CLOSING ─── */
+.closing-h {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(26px, 3.5vw, 46px);
+  font-weight: 800; line-height: 1.1;
+  letter-spacing: -.025em; margin-bottom: 24px;
+}
+.closing-h .acc { color: var(--accent); }
+.closing-h .dim { color: var(--text-2); }
+.closing-body {
+  font-size: 16px; color: var(--text-2);
+  line-height: 1.85; max-width: 560px; margin-bottom: 44px;
+}
+.closing-body strong { color: var(--text); font-weight: 500; }
+.closing-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 52px; }
+
+.sig { display: flex; align-items: center; gap: 24px; }
+.sig-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 18px; font-weight: 800;
+  color: var(--text);
+}
+.sig-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--text-2); margin-top: 4px;
+}
+.sig-divider { width: 1px; height: 40px; background: var(--rule-b); }
+.sig-note {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--text-2); line-height: 1.7;
+}
+.sig-note strong { color: var(--accent); }
+
+/* ─── FOOTER ─── */
+footer {
+  border-top: 1px solid var(--rule);
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 22px var(--px);
+}
+.ft {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; color: var(--text-3); letter-spacing: .08em;
+}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 768px) {
+  :root { --px: 22px; }
+  .exp-item { grid-template-columns: 1fr; gap: 10px; }
+  .why-row, .proj-grid, .build-grid, .skills-row { grid-template-columns: 1fr; }
+  .metrics-row { grid-template-columns: 1fr 1fr; }
+  .nav-links { display: none; }
+  .sig { flex-direction: column; align-items: flex-start; gap: 14px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Mohammad Ruvaifa <span>→ Heva AI</span></div>
+  <ul class="nav-links">
+    <li><a href="#why">Why Heva</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#build">What I'd Build</a></li>
+    <li><a href="#closing">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section id="hero">
+  <div class="hero-glow"></div>
+  <div class="signal-line"></div>
+  <div class="wrap">
+
+    <div class="eyebrow">Applying for Backend / AI·ML Intern &nbsp;·&nbsp; Heva AI &nbsp;·&nbsp; Bengaluru</div>
+
+    <h1 class="hero-h1">
+      I build systems<br>
+      that give people<br>
+      <span class="amber">their time back.</span>
+    </h1>
+
+    <p class="hero-body">
+      That's what Heva means — <strong>Human Economic Value Added</strong>. You're building the productivity engine of civilization. I've spent the last year building production AI infrastructure that makes LLMs reliable enough to trust with real work. That's the same problem, one layer deeper.
+    </p>
+
+    <div class="hero-stats">
+      <div>
+        <div class="hstat-val">7<span class="acc">-agent</span></div>
+        <div class="hstat-lbl">LLM gateway<br>in production</div>
+      </div>
+      <div>
+        <div class="hstat-val">28<span class="acc">+</span></div>
+        <div class="hstat-lbl">Beta users — NVIDIA<br>&amp; Microsoft engineers</div>
+      </div>
+      <div>
+        <div class="hstat-val">Go<span class="acc">+</span>Py</div>
+        <div class="hstat-lbl">Production backends<br>built solo end-to-end</div>
+      </div>
+      <div>
+        <div class="hstat-val">R²<span class="acc">=0.87</span></div>
+        <div class="hstat-lbl">Published ML research<br>Elsevier · 2026</div>
+      </div>
+    </div>
+
+    <div class="hero-actions">
+      <a href="mailto:ruvaifa99@gmail.com" class="btn-amber">
+        ruvaifa99@gmail.com
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+          <path d="M2 6.5h9M8 3l3.5 3.5L8 10" stroke="#0d0f12" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <a href="https://github.com/Ruvaifa" target="_blank" class="btn-outline">↗ github.com/Ruvaifa</a>
+      <a href="https://www.linkedin.com/in/ruvaifa-mohammad-a5648a300" target="_blank" class="btn-outline">↗ LinkedIn</a>
+      <a href="https://crukx.dev" target="_blank" class="btn-outline">↗ crukx.dev</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ WHY HEVA ══ -->
+<section id="why">
+  <div class="wrap">
+    <p class="sec-tag reveal">Why Heva</p>
+    <h2 class="sec-h2 reveal d1">Not every founder cares about<br><span class="acc">civilizational scale.</span></h2>
+    <p class="sec-sub reveal d2">Most startups optimize for the next quarter. Heva optimizes for the next thousand years. That's a different kind of work — and a different kind of team to build with.</p>
+
+    <div class="why-row reveal d3">
+      <div class="why-card">
+        <div class="why-num">01 — The mission</div>
+        <div class="why-title">Productivity compounds. So should the infrastructure under it.</div>
+        <div class="why-body">Heva's thesis — <strong>HEVA, Human Economic Value Added</strong> — is that every hour of human intelligence amplified by AI compounds into civilization's progress. I've been building the reliability layer under AI systems so they can actually be trusted with real work. An agent that hallucinates doesn't amplify human effort. It wastes it. That's the problem I've been solving at Crukx — and it directly feeds what Heva is building.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-num">02 — The stage</div>
+        <div class="why-title">Early-stage means your code is the company.</div>
+        <div class="why-body">You said this isn't a typical internship — <strong>significant ownership, real decisions, problems that matter</strong>. I've lived that already. At ParkQ I'm the sole backend engineer: if I don't ship, it doesn't exist. At Crukx I ran 100+ customer calls and made product decisions that shaped what we built. I don't need to be ramped up on what startup ownership feels like.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-num">03 — The stack</div>
+        <div class="why-title">Agents, MCP, APIs — I'm already inside this problem space.</div>
+        <div class="why-body">Heva is building AI-native productivity tools with agents and MCP at the core. <strong>I built a seven-agent gateway at Crukx</strong> — orchestration, tool-calling, state management, hallucination correction. I understand what breaks in multi-agent systems in production, not just in demos. That operational experience is directly useful on day one.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-num">04 — The founder</div>
+        <div class="why-title">You built 3 companies without an IIT badge. I respect that deeply.</div>
+        <div class="why-body">Fazal, you've posted about how pedigree loses its predictive value after two years — what matters is <strong>having built something before, and seeing failure up close</strong>. I'm a co-founder. I've seen both. IISER isn't IIT, but Crukx has NVIDIA engineers in production and a published Elsevier paper. Results over credentials.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ EXPERIENCE ══ -->
+<section id="experience">
+  <div class="wrap">
+    <p class="sec-tag reveal">Experience</p>
+    <h2 class="sec-h2 reveal d1">Shipped in production.<br><span class="dim">Not in Jupyter notebooks.</span></h2>
+
+    <div class="exp-list">
+
+      <!-- Crukx -->
+      <div class="exp-item reveal d2">
+        <div>
+          <div class="exp-date">Jan 2026 – Present</div>
+          <div class="exp-co">Crukx</div>
+          <div class="exp-role">Co-Founder</div>
+          <span class="exp-pill">AI Infrastructure</span>
+        </div>
+        <div>
+          <div class="exp-title">Runtime hallucination detection — seven-agent LLM gateway in production</div>
+          <ul class="exp-bullets">
+            <li>Co-founded and built a B2B AI infrastructure company; a <strong>seven-agent gateway</strong> with autonomous hallucination detection, prompt optimization, and a Self-Healing Loop in Python/FastAPI — outperformed Perplexity Council by 20% on internal benchmarks.</li>
+            <li>Onboarded <strong>28 beta testers in production</strong> including engineers from NVIDIA and Microsoft, through 100+ discovery calls with founders, CTOs, and engineers.</li>
+            <li>Led product strategy targeting AI-assisted drafting, contract review, and research tool verticals — reducing LLM hallucination rate and inference costs simultaneously.</li>
+          </ul>
+          <div class="exp-tags">
+            <span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">LLM Agents</span>
+            <span class="tag">Multi-Agent</span><span class="tag">Hallucination Detection</span><span class="tag">Prompt Engineering</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ParkQ -->
+      <div class="exp-item reveal d2">
+        <div>
+          <div class="exp-date">May 2026 – Present</div>
+          <div class="exp-co">ParkQ (Stealth)</div>
+          <div class="exp-role">SDE Intern</div>
+          <span class="exp-pill">Backend Systems</span>
+        </div>
+        <div>
+          <div class="exp-title">Sole backend engineer — Go, WebSockets, routing engine, horizontal scaling</div>
+          <ul class="exp-bullets">
+            <li>Architected and built the <strong>entire backend solo</strong> in Go with PostgreSQL and Docker — real-time trip recording, sharing, and discovery platform.</li>
+            <li>Integrated OSRM routing engine and OpenRoute Service API for turn-by-turn navigation; implemented multi-layer caching and request throttling for high-concurrency map requests.</li>
+            <li>Designed real-time messaging from scratch using WebSockets, connection pooling, and persistent PostgreSQL storage — stateless Docker for horizontal scalability.</li>
+          </ul>
+          <div class="exp-tags">
+            <span class="tag">Go (Golang)</span><span class="tag">PostgreSQL</span><span class="tag">WebSockets</span>
+            <span class="tag">Docker</span><span class="tag">OSRM</span><span class="tag">REST API</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- UiT -->
+      <div class="exp-item reveal d2">
+        <div>
+          <div class="exp-date">Nov 2025 – Jan 2026</div>
+          <div class="exp-co">UiT – Arctic University of Norway</div>
+          <div class="exp-role">Research Intern</div>
+          <span class="exp-pill">ML Research</span>
+        </div>
+        <div>
+          <div class="exp-title">Published deep learning research — NASA C-MAPSS, Elsevier ARRAY Journal</div>
+          <ul class="exp-bullets">
+            <li>Built a modular PyTorch benchmarking framework for RUL prediction across 8 architectures (LSTM, CNN-LSTM, Transformer, attention hybrids) with custom loss functions and early stopping.</li>
+            <li>Achieved <strong>R²=0.87, RMSE=14.62</strong> via data-centric feature engineering — proving preprocessing > architectural complexity.</li>
+            <li>Published in Elsevier ARRAY Journal (2026); awarded <strong>merit scholarship</strong> by UiT. <a href="https://doi.org/10.1016/j.array.2026.100919" target="_blank" style="color:var(--accent);font-size:11px;font-family:'JetBrains Mono',monospace;margin-left:8px;">↗ Read paper</a></li>
+          </ul>
+          <div class="exp-tags">
+            <span class="tag">PyTorch</span><span class="tag">LSTM</span><span class="tag">Transformer</span>
+            <span class="tag">Time-Series</span><span class="tag">Feature Engineering</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sixth Sense -->
+      <div class="exp-item reveal d2">
+        <div>
+          <div class="exp-date">May 2025 – Jul 2025</div>
+          <div class="exp-co">Sixth Sense Lab, IISER-B</div>
+          <div class="exp-role">Research Intern</div>
+          <span class="exp-pill">Hardware · Systems</span>
+        </div>
+        <div>
+          <div class="exp-title">Micron-scale electro-lithography control system in Python</div>
+          <ul class="exp-bullets">
+            <li>Built a Python control algorithm for an indigenous probe-based electro-lithography system achieving <strong>micron-scale precision</strong> for chip fabrication — X/Y positioning and Z-axis SMU feedback.</li>
+            <li>Long-term goal: low-cost alternative to commercial electron-beam lithography for academic research. <a href="https://github.com/Ruvaifa/electro-lithography-system" target="_blank" style="color:var(--accent);font-size:11px;font-family:'JetBrains Mono',monospace;">↗ GitHub</a></li>
+          </ul>
+          <div class="exp-tags">
+            <span class="tag">Python</span><span class="tag">Hardware Control</span><span class="tag">SMU Integration</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ PROJECTS ══ -->
+<section id="projects">
+  <div class="wrap">
+    <p class="sec-tag reveal">Projects</p>
+    <h2 class="sec-h2 reveal d1">Things I built.<br><span class="dim">With outcomes attached.</span></h2>
+
+    <div class="proj-grid reveal d2">
+      <div class="proj-card">
+        <div class="proj-header">
+          <div class="proj-name">CampusFlow</div>
+          <a href="https://github.com/Ruvaifa" target="_blank" class="proj-link">↗ GitHub</a>
+        </div>
+        <p class="proj-desc">Identity-resolution pipeline unifying WiFi logs, CCTV metadata, access cards and lab systems. ML-powered occupancy forecasting with XGBoost + LightGBM + Neural Net ensemble.</p>
+        <div class="proj-result">92%+ match accuracy · 2nd Runner Up, IIT Guwahati Ethos 2025 (2000+ participants)</div>
+        <div class="exp-tags">
+          <span class="tag">React</span><span class="tag">FastAPI</span><span class="tag">PostgreSQL</span><span class="tag">XGBoost</span>
+        </div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-header">
+          <div class="proj-name">PitStopAI</div>
+          <a href="https://github.com/Ruvaifa" target="_blank" class="proj-link">↗ GitHub</a>
+        </div>
+        <p class="proj-desc">Semantic search over large-scale pull request datasets. Embedding pipeline with bge-base-en-v1.5, Supabase pgvector, chunking and incremental update logic for long code diffs.</p>
+        <div class="proj-result">Top 120 of 3500+ teams · Atlassian & Williams Racing Hackathon 2025</div>
+        <div class="exp-tags">
+          <span class="tag">Python</span><span class="tag">pgvector</span><span class="tag">RAG</span><span class="tag">FastAPI</span>
+        </div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-header">
+          <div class="proj-name">CodeGuard Nexus</div>
+          <a href="https://github.com/Ruvaifa/code-guard-nexus" target="_blank" class="proj-link">↗ GitHub</a>
+        </div>
+        <p class="proj-desc">AI-powered code security and quality analysis. Automated vulnerability scanning, LLM-driven review agents, and developer feedback loops for teams shipping fast.</p>
+        <div class="proj-result">LLM agents · static analysis · automated review pipeline</div>
+        <div class="exp-tags">
+          <span class="tag">Python</span><span class="tag">LLM Agents</span><span class="tag">Security</span>
+        </div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-header">
+          <div class="proj-name">Electro-Lithography System</div>
+          <a href="https://github.com/Ruvaifa/electro-lithography-system" target="_blank" class="proj-link">↗ GitHub</a>
+        </div>
+        <p class="proj-desc">Control software for indigenous probe-based lithography. Precise X/Y positioning and Z-axis SMU feedback for micron-scale patterning — academic alternative to commercial e-beam systems.</p>
+        <div class="proj-result">Micron-scale precision · targeting nanometer resolution</div>
+        <div class="exp-tags">
+          <span class="tag">Python</span><span class="tag">Hardware Control</span><span class="tag">SMU</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pub-card reveal d3">
+      <div class="pub-badge">
+        <div class="pub-badge-top">Published</div>
+        <div class="pub-badge-j">ARRAY</div>
+        <div class="pub-badge-pub">Elsevier · 2026</div>
+      </div>
+      <div>
+        <div class="pub-title">Evaluating the impact of data preprocessing on deep neural architectures for Remaining Useful Life estimation of turbofan engines</div>
+        <div class="pub-meta">Mohammad Ruvaifa, Pragyan Banerjee, Anowarul Habib · DOI: 10.1016/j.array.2026.100919</div>
+        <div class="pub-body">Benchmarked 8 architectures (LSTM, CNN-LSTM, Transformer, attention hybrids) on NASA C-MAPSS. Key finding: a well-preprocessed vanilla LSTM (R²=0.87) outperformed every complex architecture — data-centric design > architectural complexity.</div>
+        <a href="https://doi.org/10.1016/j.array.2026.100919" target="_blank" style="display:inline-flex;align-items:center;gap:6px;margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);text-decoration:none;">↗ Read paper</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ WHAT I'D BUILD ══ -->
+<section id="build">
+  <div class="wrap">
+    <p class="sec-tag reveal">What I'd Build at Heva</p>
+    <h2 class="sec-h2 reveal d1">Concrete systems.<br><span class="dim">Not feature suggestions.</span></h2>
+    <p class="sec-sub reveal d2">Four things I'd contribute from week one, mapped to what Heva is actually building.</p>
+
+    <div class="build-grid reveal d2">
+
+      <div class="build-card">
+        <span class="build-icon">⚙️</span>
+        <div class="build-title">Reliable Agent Backend</div>
+        <div class="build-desc">Heva's agents need a backend that doesn't fall over when five workflows run in parallel. <strong>Go or Python, depending on latency requirements</strong> — connection pooling, queue management, retry logic, graceful degradation. Built on the same architecture pattern I used at ParkQ for high-concurrency map requests. Agents are only as good as the infrastructure they run on.</div>
+        <div class="exp-tags"><span class="tag">Go</span><span class="tag">Python</span><span class="tag">PostgreSQL</span><span class="tag">Docker</span></div>
+      </div>
+
+      <div class="build-card">
+        <span class="build-icon">🔌</span>
+        <div class="build-title">MCP Server Integration Layer</div>
+        <div class="build-desc">MCP is becoming the standard connector for agents to talk to tools. <strong>A backend layer that handles MCP server registration, auth, routing, and failure isolation</strong> — so Heva's agents can connect to any tool without the integration logic bleeding into the product layer. I've worked with multi-agent tool-calling at Crukx; MCP standardizes exactly what I built manually.</div>
+        <div class="exp-tags"><span class="tag">MCP</span><span class="tag">Python</span><span class="tag">API Gateway</span><span class="tag">Auth</span></div>
+      </div>
+
+      <div class="build-card">
+        <span class="build-icon">🧠</span>
+        <div class="build-title">Hallucination-Resistant Pipelines</div>
+        <div class="build-desc">Productivity tools that hallucinate waste more time than they save. <strong>A validation layer that cross-checks LLM outputs against source context</strong> before surfacing them to users — built from the same architecture as Crukx's Self-Healing Loop. For a productivity product, trust is the feature. Accuracy isn't optional.</div>
+        <div class="exp-tags"><span class="tag">LangChain</span><span class="tag">RAG</span><span class="tag">Validation</span><span class="tag">Python</span></div>
+      </div>
+
+      <div class="build-card">
+        <span class="build-icon">📡</span>
+        <div class="build-title">Developer-Facing API</div>
+        <div class="build-desc">Heva's keywords include API and Developers — you're building for other builders. <strong>A clean, well-typed REST (or GraphQL) API with proper versioning, rate limiting, and docs</strong> that external developers can build on top of. I've built FastAPI backends with authentication, rate limiting, and schema validation. Developer experience is a product decision, not an afterthought.</div>
+        <div class="exp-tags"><span class="tag">FastAPI</span><span class="tag">REST</span><span class="tag">Auth</span><span class="tag">Rate Limiting</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ BY THE NUMBERS ══ -->
+<section id="numbers">
+  <div class="wrap">
+    <p class="sec-tag reveal">By the numbers</p>
+    <h2 class="sec-h2 reveal d1">Outcomes, <span class="dim">not intentions.</span></h2>
+
+    <div class="metrics-row reveal d2">
+      <div class="m-cell">
+        <div class="m-val">28<span class="acc">+</span></div>
+        <div class="m-lbl">Production users<br>at Crukx</div>
+      </div>
+      <div class="m-cell">
+        <div class="m-val"><span class="acc">100</span>+</div>
+        <div class="m-lbl">Customer calls<br>as a founder</div>
+      </div>
+      <div class="m-cell">
+        <div class="m-val">3<span class="acc">×</span></div>
+        <div class="m-lbl">Hackathon podiums<br>8000+ participants</div>
+      </div>
+      <div class="m-cell">
+        <div class="m-val"><span class="acc">1</span></div>
+        <div class="m-lbl">Days to ramp up<br>on your stack</div>
+      </div>
+    </div>
+
+    <div class="skills-row reveal d3">
+      <div class="skill-group">
+        <div class="skill-group-title">Backend & Systems</div>
+        <div class="skill-items">
+          <span class="tag">Python</span><span class="tag">Go (Golang)</span><span class="tag">FastAPI</span>
+          <span class="tag">PostgreSQL</span><span class="tag">WebSockets</span><span class="tag">Docker</span>
+          <span class="tag">REST API</span><span class="tag">SQL</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">AI / Agents / ML</div>
+        <div class="skill-items">
+          <span class="tag">LLM Agents</span><span class="tag">LangChain</span><span class="tag">MCP</span>
+          <span class="tag">RAG</span><span class="tag">PyTorch</span><span class="tag">Hallucination Detection</span>
+          <span class="tag">pgvector</span><span class="tag">Prompt Eng.</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Infrastructure & Frontend</div>
+        <div class="skill-items">
+          <span class="tag">Supabase</span><span class="tag">MongoDB</span><span class="tag">React</span>
+          <span class="tag">Next.js</span><span class="tag">Git/GitHub</span><span class="tag">Linux</span>
+          <span class="tag">AWS basics</span><span class="tag">Google Cloud</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CLOSING ══ -->
+<section id="closing">
+  <div class="wrap">
+    <p class="sec-tag reveal">The Ask</p>
+    <h2 class="closing-h reveal d1">
+      Let's add some<br>
+      <span class="acc">HEVA</span> to your team.
+    </h2>
+    <p class="closing-body reveal d2">
+      You said you want builders who take ownership and make an impact. I co-founded a startup, shipped a published paper, and own an entire backend in production — all as an undergrad.<br><br>
+      <strong>I don't need you to teach me what ownership feels like.</strong> I need you to point me at a problem worth solving.<br><br>
+      Backend or AI/ML — I'm useful either way. Happy to demonstrate on a 30-min call.
+    </p>
+
+    <div class="closing-actions reveal d3">
+      <a href="mailto:ruvaifa99@gmail.com" class="btn-amber">
+        Email — ruvaifa99@gmail.com
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+          <path d="M2 6.5h9M8 3l3.5 3.5L8 10" stroke="#0d0f12" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <a href="https://github.com/Ruvaifa" target="_blank" class="btn-outline">↗ GitHub</a>
+      <a href="https://www.linkedin.com/in/ruvaifa-mohammad-a5648a300" target="_blank" class="btn-outline">↗ LinkedIn</a>
+      <a href="https://crukx.dev" target="_blank" class="btn-outline">↗ crukx.dev</a>
+      <a href="https://doi.org/10.1016/j.array.2026.100919" target="_blank" class="btn-outline">↗ Paper</a>
+    </div>
+
+    <div class="sig reveal d4">
+      <div>
+        <div class="sig-name">Mohammad Ruvaifa</div>
+        <div class="sig-sub">IISER Bhopal &nbsp;·&nbsp; Co-Founder, Crukx &nbsp;·&nbsp; +91-7985348148</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="ft">&copy; 2026 Mohammad Ruvaifa — Backend / AI·ML Intern Application, Heva AI</div>
+  <div class="ft">github.com/Ruvaifa &nbsp;·&nbsp; crukx.dev</div>
+</footer>
+
+<script>
+(function(){
+  /* Scroll reveal */
+  var els = document.querySelectorAll('.reveal');
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.06, rootMargin: '0px 0px -36px 0px' });
+  els.forEach(function(el){ io.observe(el); });
+
+  /* Smooth anchors */
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      var t = document.querySelector(a.getAttribute('href'));
+      if(t){ e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+}());
+</script>
+</body>
+</html>
